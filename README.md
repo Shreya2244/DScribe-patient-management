@@ -1,13 +1,12 @@
 # DScribe Patient Admission Management
 
-A responsive patient admission dashboard for hospital staff. The app supports adding, viewing, searching, filtering, editing, discharging, and deleting patient records. Login and signup are intentionally not included, as specified in the task.
+A responsive patient admission dashboard for recording and managing hospital admissions. The app supports adding, viewing, searching, filtering, editing, discharging, and deleting patient records.
 
-## Task links
+## Links
 
-- Public GitHub repository: publish this project and add its URL here.
-- Live application: deploy the frontend and backend, then add the URL here.
-
-Deployment steps are in [DEPLOYMENT.md](DEPLOYMENT.md). The links above remain unfilled until the project is published and deployed.
+- **Live app:** https://dscribe-patient-management-seven.vercel.app
+- **API:** https://dscribe-patient-api.onrender.com
+- **Source:** https://github.com/Shreya2244/DScribe-patient-management
 
 ## Screenshots
 
@@ -18,18 +17,18 @@ Deployment steps are in [DEPLOYMENT.md](DEPLOYMENT.md). The links above remain u
 ## Features
 
 - Add and edit patient records with name, age, gender, ward, department, doctor, admission date, and status.
-- View all patients and dashboard totals for registered, admitted, and discharged patients.
-- Search by patient name and filter by ward, department, and doctor. Filters can be cleared or refreshed.
-- Discharge an admitted patient and permanently delete a record after confirmation.
-- Validate required fields and allowed values in both the React UI and Flask API.
-- Use the dashboard on mobile, tablet, and desktop screens.
-- Store records in SQLite so they remain available after the backend restarts.
+- View total, admitted, and discharged patient counts.
+- Search by patient name and filter by ward, department, and doctor.
+- Discharge or delete records with confirmation.
+- Validate required fields and allowed values in both the frontend and API.
+- Responsive layouts for mobile, tablet, and desktop.
 
 ## Technology
 
-- Frontend: React 19 and Vite
-- Backend: Python 3, Flask, and Flask-CORS
-- Database: SQLite
+- **Frontend:** React 19 and Vite
+- **Backend:** Python 3, Flask, Flask-CORS, and Gunicorn
+- **Database:** SQLite
+- **Hosting:** Vercel (frontend) and Render (API)
 
 ## Run locally
 
@@ -45,7 +44,7 @@ pip install -r requirements.txt
 python app.py
 ```
 
-The API starts at `http://127.0.0.1:5000`. On first launch it creates `backend/patients.db`.
+The API runs at `http://127.0.0.1:5000`. On first launch, it creates `backend/patients.db`.
 
 ### Frontend
 
@@ -55,21 +54,23 @@ npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite, usually `http://localhost:5173`. For a separately hosted API, set `VITE_API_URL` to the API base URL ending in `/api` before starting or building the frontend. The default is `http://127.0.0.1:5000/api`.
+Open the local URL printed by Vite, usually `http://localhost:5173`. The frontend uses `http://127.0.0.1:5000/api` by default. To use another API, set `VITE_API_URL` to its base URL ending in `/api` before starting or building the frontend.
 
 ## API routes
 
 | Method | Route | Purpose |
 | --- | --- | --- |
-| `GET` | `/api/options` | Get the allowed dropdown values |
-| `GET` | `/api/patients` | List patients; supports `search`, `ward`, `department`, and `doctor` query filters |
+| `GET` | `/api/options` | Get allowed dropdown values |
+| `GET` | `/api/patients` | List patients; supports `search`, `ward`, `department`, and `doctor` filters |
 | `POST` | `/api/patients` | Add a patient |
 | `PUT` | `/api/patients/<id>` | Update a patient |
 | `PATCH` | `/api/patients/<id>/discharge` | Mark a patient as discharged |
 | `DELETE` | `/api/patients/<id>` | Delete a patient |
 
-## Data and deployment
+## Deployment and data
 
-By default, SQLite stores records in `backend/patients.db`. Set `DATABASE_PATH` to choose another database file. For deployment, use persistent storage for this file and set `CORS_ALLOWED_ORIGINS` and the frontend's `VITE_API_URL`; see [DEPLOYMENT.md](DEPLOYMENT.md).
+See [DEPLOYMENT.md](DEPLOYMENT.md) for deployment configuration. The frontend uses the `VITE_API_URL` environment variable, and the API uses `CORS_ALLOWED_ORIGINS` to allow the frontend origin.
 
-The app has no authentication. Keep it on a trusted network and do not use real patient information on a public deployment without appropriate access controls and privacy safeguards.
+Locally, SQLite stores records in `backend/patients.db`; set `DATABASE_PATH` to use a different file. The deployed Render service currently uses its free plan without persistent storage, so its SQLite records can be lost when the service restarts or is redeployed. Persistent storage is needed for records to survive those events.
+
+This demo has no authentication or access control. Do not enter real patient information on the public deployment.
